@@ -1,0 +1,20 @@
+name:                tapf-chat
+version:             0.1.0.0
+synopsis:            A minimal chat server
+homepage:            https://github.com/pbv/tapf-chat
+license:             MIT
+license-file:        LICENSE
+author:              Pedro Vasconcelos
+maintainer:          pbv@dcc.fc.up.pt
+copyright:           2017 Pedro Vasconcelos
+category:            Concurrency
+build-type:          Simple
+cabal-version:       >=1.10
+extra-source-files:  README.md
+
+executable tapf-chat
+  hs-source-dirs:      src
+  main-is:             Main.hs
+  default-language:    Haskell2010
+  build-depends:       base >= 4.7 && < 5,
+                       network
