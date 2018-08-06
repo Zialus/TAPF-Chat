@@ -43,7 +43,7 @@ newServer = do
 -- but the server still hasn't noticed it
 sendMessage :: Client -> Message ->  IO ()
 sendMessage  Client{..} msg
-  = hPutStrLn clientHandle msg `catch` (\(e::IOException) -> return ())
+  = hPutStrLn clientHandle msg `catch` (\(e::IOException) -> print e )
 
 -- | broadcast a message to many clients
 broadcast :: [Client] -> Message -> IO ()
@@ -77,7 +77,7 @@ invalidName name list
 
 -- | remove a client
 removeClient :: Server -> Client -> IO ()
-removeClient server@Server{..} client@Client{..} = do
+removeClient Server{..} client@Client{..} = do
   clients <- takeMVar clientList
   let clients' = delete client clients
   putMVar clientList clients'
