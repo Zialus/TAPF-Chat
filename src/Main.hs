@@ -3,7 +3,7 @@
 module Main where
 
 import           Control.Monad (forever)
-import           Control.Concurrent
+import           Control.Concurrent (forkFinally)
 import           Control.Concurrent.MVar
 import           Control.Exception hiding (handle)
 import           System.IO
