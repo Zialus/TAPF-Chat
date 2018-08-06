@@ -81,7 +81,8 @@ removeClient server@Server{..} client@Client{..} = do
   clients <- takeMVar clientList
   let clients' = delete client clients
   putMVar clientList clients'
-  broadcast clients' (clientName  ++ " disconnected") 
+  printf "User %s: disconnected\n" clientName
+  broadcast clients' (clientName  ++ " disconnected")
 
 
 -- | handle an new client
