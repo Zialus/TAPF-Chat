@@ -49,6 +49,11 @@ sendMessage  Client{..} msg
 broadcast :: [Client] -> Message -> IO ()
 broadcast clients msg  = mapM_ (\client -> sendMessage client msg) clients
 
+-- | broadcast a message from a client to many clients
+broadcastFromClient :: Client -> [Client] -> Message -> IO ()
+broadcastFromClient sender clients msg  = mapM_ (\client -> if client /= sender
+    then sendMessage client msg
+    else sendMessage client "Message sent") clients
 
 -- | try to add a new client 
 checkAddClient :: Server -> ClientName -> Handle -> IO (Maybe Client)
@@ -104,11 +109,11 @@ talk handle server@Server{..} = do
 -- This could be improved e.g. by filtering empty lines or
 -- parsing special commands such as "quit", etc.
 runClient :: Server -> Client -> IO ()
-runClient Server{..} Client{..} = forever $ do
+runClient Server{..} client@Client{..} = forever $ do
   txt <- hGetLine clientHandle
   let msg = clientName ++ ": " ++ txt
-  withMVar clientList $ \clients -> broadcast clients msg 
-  
+  withMVar clientList $ \clients -> broadcastFromClient client clients msg
+
 -- | the application entry point
 main :: IO ()
 main = withSocketsDo $ do
