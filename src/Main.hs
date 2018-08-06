@@ -5,7 +5,7 @@ module Main where
 import           Control.Monad (forever)
 import           Control.Concurrent
 import           Control.Concurrent.MVar
-import           Control.Exception
+import           Control.Exception hiding (handle)
 import           System.IO
 import           Network
 import           Text.Printf
@@ -119,15 +119,15 @@ runClient Server{..} client@Client{..} = forever $ do
 main :: IO ()
 main = withSocketsDo $ do
   server <- newServer
-  sock <- listenOn (PortNumber (fromIntegral port))
-  printf "Listening on port %d\n" port
+  sock <- listenOn (PortNumber (fromIntegral globalPort))
+  printf "Listening on globalPort %d\n" globalPort
   forever $ do
     (handle, host, port) <- accept sock
     printf "Accepted connection from %s: %s\n" host (show port)
     forkFinally (talk handle server) (\_ -> hClose handle)
 
-port :: Int
-port = 3000
+globalPort :: Int
+globalPort = 3000
 
 
 
