@@ -7,9 +7,11 @@ import           Control.Concurrent (forkFinally)
 import           Control.Concurrent.MVar
 import           Control.Exception hiding (handle)
 import           System.IO
-import           Network
+import           Network.Socket
 import           Text.Printf
 import           Data.List (delete)
+
+import qualified Control.Exception as E
 
 -- | client information
 type ClientName = String
@@ -119,12 +121,32 @@ runClient Server{..} client@Client{..} = forever $ do
 main :: IO ()
 main = withSocketsDo $ do
   server <- newServer
-  sock <- listenOn (PortNumber (fromIntegral globalPort))
+  addr <- resolve (show globalPort)
   printf "Listening on globalPort %d\n" globalPort
-  forever $ do
-    (handle, host, port) <- accept sock
-    printf "Accepted connection from %s: %s\n" host (show port)
-    forkFinally (talk handle server) (\_ -> hClose handle)
+  E.bracket (open addr) close (loop server)
+  where
+    resolve port = do
+        let hints = defaultHints {
+                addrFlags = [AI_PASSIVE]
+              , addrSocketType = Stream
+              }
+        addr:_ <- getAddrInfo (Just hints) Nothing (Just port)
+        return addr
+    open addr = do
+        sock <- socket (addrFamily addr) (addrSocketType addr) (addrProtocol addr)
+        setSocketOption sock ReuseAddr 1
+        bind sock (addrAddress addr)
+        -- If the prefork technique is not used,
+        -- set CloseOnExec for the security reasons.
+        let fd = fdSocket sock
+        setCloseOnExecIfNeeded fd
+        listen sock 10
+        return sock
+    loop server sock = forever $ do
+        (conn, peer) <- accept sock
+        putStrLn $ "Connection from " ++ show peer
+        handle <- socketToHandle conn ReadWriteMode
+        forkFinally (talk handle server) (\_ -> close conn)
 
 globalPort :: Int
 globalPort = 3000
