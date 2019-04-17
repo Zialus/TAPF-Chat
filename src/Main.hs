@@ -104,6 +104,7 @@ talk handle server@Server{..} = do
           hPrintf handle "Invalid name %s, please try again\n" (show name)
           getName
         Just client -> do
+          printf "%s changed name to %s.\n" (show handle) (show name)
           runClient server client `finally` removeClient server client
 
 -- | the client read loop
