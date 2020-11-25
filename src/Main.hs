@@ -131,23 +131,19 @@ main = withSocketsDo $ do
                 addrFlags = [AI_PASSIVE]
               , addrSocketType = Stream
               }
-        addr:_ <- getAddrInfo (Just hints) Nothing (Just port)
-        return addr
+        head <$> getAddrInfo (Just hints) Nothing (Just port)
     open addr = do
         sock <- socket (addrFamily addr) (addrSocketType addr) (addrProtocol addr)
         setSocketOption sock ReuseAddr 1
-        bind sock (addrAddress addr)
-        -- If the prefork technique is not used,
-        -- set CloseOnExec for the security reasons.
-        let fd = fdSocket sock
-        setCloseOnExecIfNeeded fd
-        listen sock 10
+        withFdSocket sock $ setCloseOnExecIfNeeded
+        bind sock $ addrAddress addr
+        listen sock 1024
         return sock
     loop server sock = forever $ do
         (conn, peer) <- accept sock
         putStrLn $ "Connection from " ++ show peer
         handle <- socketToHandle conn ReadWriteMode
-        forkFinally (talk handle server) (\_ -> close conn)
+        forkFinally (talk handle server) (const $ gracefulClose conn 5000)
 
 globalPort :: Int
 globalPort = 3000
