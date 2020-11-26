@@ -1,5 +1,5 @@
-# Use new container infrastructure to enable caching
-sudo: false
+# Run jobs on Linux unless "os" is specified explicitly.
+os: linux
 
 # Do not choose a language; we provide our own build tools.
 language: generic
@@ -12,84 +12,147 @@ cache:
   - $HOME/.stack
   - $TRAVIS_BUILD_DIR/.stack-work
 
-matrix:
+# We set the compiler values here to tell Travis to use a different
+# cache file per set of arguments.
+#
+jobs:
   include:
   # Build on Linux
-  - env: BUILD=stack ARGS=""
-    compiler: ": #stack default"
-    addons: {apt: {packages: [libgmp-dev]}}
-
-  - env: BUILD=stack ARGS="--resolver lts-2"
-    compiler: ": #stack 8.0.1"
-    addons: {apt: {packages: [libgmp-dev]}}
-
-  - env: BUILD=stack ARGS="--resolver lts-3"
-    compiler: ": #stack 8.0.1"
-    addons: {apt: {packages: [libgmp-dev]}}
-
-  - env: BUILD=stack ARGS="--resolver lts-6"
-    compiler: ": #stack 8.0.1"
-    addons: {apt: {packages: [libgmp-dev]}}
-
-  - env: BUILD=stack ARGS="--resolver lts-7"
-    compiler: ": #stack 8.0.1"
-    addons: {apt: {packages: [libgmp-dev]}}
-
-  - env: BUILD=stack ARGS="--resolver lts-9"
-    compiler: ": #stack 8.0.2"
-    addons: {apt: {packages: [libgmp-dev]}}
-
-  - env: BUILD=stack ARGS="--resolver lts-11"
-    compiler: ": #stack 8.2.2"
-    addons: {apt: {packages: [libgmp-dev]}}
-
-  - env: BUILD=stack ARGS="--resolver lts-12"
-    compiler: ": #stack 8.4.3"
-    addons: {apt: {packages: [libgmp-dev]}}
-
-  - env: BUILD=stack ARGS="--resolver lts-13"
-    compiler: ": #stack 8.4.3"
-    addons: {apt: {packages: [libgmp-dev]}}
-
-  - env: BUILD=stack ARGS="--resolver lts-14"
-    compiler: ": #stack 8.4.3"
-    addons: {apt: {packages: [libgmp-dev]}}
-
-  - env: BUILD=stack ARGS="--resolver lts-15"
-    compiler: ": #stack 8.4.3"
-    addons: {apt: {packages: [libgmp-dev]}}
-
-  - env: BUILD=stack ARGS="--resolver lts-16"
-    compiler: ": #stack 8.4.3"
-    addons: {apt: {packages: [libgmp-dev]}}
-
   - env: BUILD=stack ARGS="--resolver nightly"
     compiler: ": #stack nightly"
     addons: {apt: {packages: [libgmp-dev]}}
 
-  # Build on macOS
   - env: BUILD=stack ARGS=""
-    compiler: ": #stack default osx"
-    os: osx
+    compiler: ": #stack default"
+    addons: {apt: {packages: [libgmp-dev]}}
 
-  - env: BUILD=stack ARGS="--resolver lts-7"
-    compiler: ": #stack 8.0.1 osx"
-    os: osx
+  - env: BUILD=stack ARGS="--resolver lts-16.23"
+    compiler: ": #stack 8.8.4"
+    addons: {apt: {packages: [libgmp-dev]}}
+  
+  - env: BUILD=stack ARGS="--resolver lts-16.11"
+    compiler: ": #stack 8.8.3"
+    addons: {apt: {packages: [libgmp-dev]}}
 
-  - env: BUILD=stack ARGS="--resolver lts-9"
-    compiler: ": #stack 8.0.2 osx"
-    os: osx
+  - env: BUILD=stack ARGS="--resolver lts-15.3"
+    compiler: ": #stack 8.8.2"
+    addons: {apt: {packages: [libgmp-dev]}}
 
-  - env: BUILD=stack ARGS="--resolver lts-11"
-    compiler: ": #stack 8.2.2 osx"
-    os: osx
+  - env: BUILD=stack ARGS="--resolver lts-14.27"
+    compiler: ": #stack 8.6.5"
+    addons: {apt: {packages: [libgmp-dev]}}
 
-  - env: BUILD=stack ARGS="--resolver lts-12"
-    compiler: ": #stack 8.4.3 osx"
-    os: osx
+  - env: BUILD=stack ARGS="--resolver lts-13.19"
+    compiler: ": #stack 8.6.4"
+    addons: {apt: {packages: [libgmp-dev]}}
 
+  - env: BUILD=stack ARGS="--resolver lts-13.11"
+    compiler: ": #stack 8.6.3"
+    addons: {apt: {packages: [libgmp-dev]}}
+
+  - env: BUILD=stack ARGS="--resolver lts-12.26"
+    compiler: ": #stack 8.4.4"
+    addons: {apt: {packages: [libgmp-dev]}}
+
+  - env: BUILD=stack ARGS="--resolver lts-12.14"
+    compiler: ": #stack 8.4.3"
+    addons: {apt: {packages: [libgmp-dev]}}
+    
+  - env: BUILD=stack ARGS="--resolver lts-11.22"
+    compiler: ": #stack 8.2.2"
+    addons: {apt: {packages: [libgmp-dev]}}
+
+  - env: BUILD=stack ARGS="--resolver lts-9.21"
+    compiler: ": #stack 8.0.2"
+    addons: {apt: {packages: [libgmp-dev]}}
+
+  - env: BUILD=stack ARGS="--resolver lts-7.24"
+    compiler: ": #stack 8.0.1"
+    addons: {apt: {packages: [libgmp-dev]}}
+
+  - env: BUILD=stack ARGS="--resolver lts-6.35"
+    compiler: ": #stack 7.10.3"
+    addons: {apt: {packages: [libgmp-dev]}}
+
+  - env: BUILD=stack ARGS="--resolver lts-3.22"
+    compiler: ": #stack 7.10.2"
+    addons: {apt: {packages: [libgmp-dev]}}
+
+  - env: BUILD=stack ARGS="--resolver lts-2.22"
+    compiler: ": #stack 7.8.4"
+    addons: {apt: {packages: [libgmp-dev]}}
+
+  - env: BUILD=stack ARGS="--resolver lts-0.7"
+    compiler: ": #stack 7.8.3"
+    addons: {apt: {packages: [libgmp-dev]}}
+
+  # Build on macOS
   - env: BUILD=stack ARGS="--resolver nightly"
-    compiler: ": #stack nightly osx"
+    compiler: ": #stack nightly"
+    os: osx
+
+  - env: BUILD=stack ARGS=""
+    compiler: ": #stack default"
+    os: osx
+
+  - env: BUILD=stack ARGS="--resolver lts-16.23"
+    compiler: ": #stack 8.8.4"
+    os: osx
+  
+  - env: BUILD=stack ARGS="--resolver lts-16.11"
+    compiler: ": #stack 8.8.3"
+    os: osx
+
+  - env: BUILD=stack ARGS="--resolver lts-15.3"
+    compiler: ": #stack 8.8.2"
+    os: osx
+
+  - env: BUILD=stack ARGS="--resolver lts-14.27"
+    compiler: ": #stack 8.6.5"
+    os: osx
+
+  - env: BUILD=stack ARGS="--resolver lts-13.19"
+    compiler: ": #stack 8.6.4"
+    os: osx
+
+  - env: BUILD=stack ARGS="--resolver lts-13.11"
+    compiler: ": #stack 8.6.3"
+    os: osx
+
+  - env: BUILD=stack ARGS="--resolver lts-12.26"
+    compiler: ": #stack 8.4.4"
+    os: osx
+
+  - env: BUILD=stack ARGS="--resolver lts-12.14"
+    compiler: ": #stack 8.4.3"
+    os: osx
+    
+  - env: BUILD=stack ARGS="--resolver lts-11.22"
+    compiler: ": #stack 8.2.2"
+    os: osx
+
+  - env: BUILD=stack ARGS="--resolver lts-9.21"
+    compiler: ": #stack 8.0.2"
+    os: osx
+
+  - env: BUILD=stack ARGS="--resolver lts-7.24"
+    compiler: ": #stack 8.0.1"
+    os: osx
+
+  - env: BUILD=stack ARGS="--resolver lts-6.35"
+    compiler: ": #stack 7.10.3"
+    os: osx
+
+  - env: BUILD=stack ARGS="--resolver lts-3.22"
+    compiler: ": #stack 7.10.2"
+    os: osx
+
+  - env: BUILD=stack ARGS="--resolver lts-2.22"
+    compiler: ": #stack 7.8.4"
+    os: osx
+
+  - env: BUILD=stack ARGS="--resolver lts-0.7"
+    compiler: ": #stack 7.8.3"
     os: osx
 
   # Nightly builds are allowed to fail
@@ -101,7 +164,7 @@ before_install:
 - unset CC
 
 # Download and unpack the stack executable
-- export PATH=$HOME/.local/bin:/:$HOME/.cabal/bin:$PATH
+- export PATH=$HOME/.local/bin:$HOME/.cabal/bin:$PATH
 - mkdir -p ~/.local/bin
 - |
   if [ `uname` = "Darwin" ]
