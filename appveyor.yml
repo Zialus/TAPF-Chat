@@ -1,13 +1,9 @@
-build: off
-
-before_test:
-  # http://help.appveyor.com/discussions/problems/6312-curl-command-not-found
-  - set PATH=C:\Program Files\Git\mingw64\bin;%PATH%
-
-  - curl -sS -ostack.zip -L --insecure https://get.haskellstack.org/stable/windows-x86_64.zip
+before_build:
+  - curl -sS -o stack.zip -L https://get.haskellstack.org/stable/windows-x86_64.zip
   - 7z x stack.zip stack.exe
 
 clone_folder: "c:\\stack"
+
 environment:
   global:
     STACK_ROOT: "c:\\sr"
@@ -22,23 +18,21 @@ environment:
     - ARGS: "--resolver lts-16.23"  # stack 8.8.4
     - ARGS: "--resolver lts-16.11"  # stack 8.8.3
     - ARGS: "--resolver lts-15.3"  # stack 8.8.2
-    - ARGS: "--resolver lts-14.27"  # stack 8.6.5
-    - ARGS: "--resolver lts-13.19"  # stack 8.6.4
-    - ARGS: "--resolver lts-13.11"  # stack 8.6.3
-    - ARGS: "--resolver lts-12.26"  # stack 8.4.4
-    - ARGS: "--resolver lts-12.14"  # stack 8.4.3
-    - ARGS: "--resolver lts-11.22"  # stack 8.2.2
-    - ARGS: "--resolver lts-9.21"  # stack 8.0.2
-    - ARGS: "--resolver lts-7.24"  # stack 8.0.1
-    - ARGS: "--resolver lts-6.35"  # stack 7.10.3
-    - ARGS: "--resolver lts-3.22"  # stack 7.10.2
-    - ARGS: "--resolver lts-2.22"  # stack 7.8.4
-    - ARGS: "--resolver lts-0.7"  # stack 7.8.3
+    # - ARGS: "--resolver lts-14.27"  # stack 8.6.5
+    # - ARGS: "--resolver lts-13.19"  # stack 8.6.4
+    # - ARGS: "--resolver lts-13.11"  # stack 8.6.3
+    # - ARGS: "--resolver lts-12.26"  # stack 8.4.4
+    # - ARGS: "--resolver lts-12.14"  # stack 8.4.3
+    # - ARGS: "--resolver lts-11.22"  # stack 8.2.2
+    # - ARGS: "--resolver lts-9.21"  # stack 8.0.2
+    # - ARGS: "--resolver lts-7.24"  # stack 8.0.1
+    # - ARGS: "--resolver lts-6.35"  # stack 7.10.3
+    # - ARGS: "--resolver lts-3.22"  # stack 7.10.2
+    # - ARGS: "--resolver lts-2.22"  # stack 7.8.4
+    # - ARGS: "--resolver lts-0.7"  # stack 7.8.3
+
+build_script:
+  - stack %ARGS% setup --silent
 
 test_script:
-  # Install toolchain, but do it silently due to lots of output
-  - stack %ARGS% setup > nul
-
-  # The ugly echo "" hack is to avoid complaints about 0 being an invalid file
-  # descriptor
-  - echo "" | stack %ARGS% --no-terminal test --bench
+  - stack %ARGS% --no-terminal test --bench
