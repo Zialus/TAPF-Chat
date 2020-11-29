@@ -1,13 +1,6 @@
-before_build:
-  - curl -sS -o stack.zip -L https://get.haskellstack.org/stable/windows-x86_64.zip
-  - 7z x stack.zip stack.exe
-
-clone_folder: "c:\\stack"
-
 environment:
   global:
     STACK_ROOT: "c:\\sr"
-
     # Override the temp directory to avoid sed escaping issues
     # See https://github.com/haskell/cabal/issues/5386
     TMP: "c:\\tmp"
@@ -15,24 +8,46 @@ environment:
   matrix:
     - ARGS: "--resolver nightly"  # stack nightly
     - ARGS: ""  # stack default
-    - ARGS: "--resolver lts-16.23"  # stack 8.8.4
+    - ARGS: "--resolver lts-16.25"  # stack 8.8.4
     - ARGS: "--resolver lts-16.11"  # stack 8.8.3
     - ARGS: "--resolver lts-15.3"  # stack 8.8.2
-    # - ARGS: "--resolver lts-14.27"  # stack 8.6.5
-    # - ARGS: "--resolver lts-13.19"  # stack 8.6.4
-    # - ARGS: "--resolver lts-13.11"  # stack 8.6.3
-    # - ARGS: "--resolver lts-12.26"  # stack 8.4.4
-    # - ARGS: "--resolver lts-12.14"  # stack 8.4.3
-    # - ARGS: "--resolver lts-11.22"  # stack 8.2.2
-    # - ARGS: "--resolver lts-9.21"  # stack 8.0.2
-    # - ARGS: "--resolver lts-7.24"  # stack 8.0.1
-    # - ARGS: "--resolver lts-6.35"  # stack 7.10.3
-    # - ARGS: "--resolver lts-3.22"  # stack 7.10.2
-    # - ARGS: "--resolver lts-2.22"  # stack 7.8.4
-    # - ARGS: "--resolver lts-0.7"  # stack 7.8.3
+    # - ARGS: "--resolver lts-14.27"   # stack 8.6.5
+    # - ARGS: "--resolver lts-13.19"   # stack 8.6.4
+    # - ARGS: "--resolver lts-13.11"   # stack 8.6.3
+    # - ARGS: "--resolver lts-12.26"   # stack 8.4.4
+    # - ARGS: "--resolver lts-12.14"   # stack 8.4.3
+    # - ARGS: "--resolver lts-11.22"   # stack 8.2.2
+    # - ARGS: "--resolver lts-9.21"   # stack 8.0.2
+    # - ARGS: "--resolver lts-7.24"   # stack 8.0.1
+    # - ARGS: "--resolver lts-6.35"   # stack 7.10.3
+    # - ARGS: "--resolver lts-3.22"   # stack 7.10.2
+    # - ARGS: "--resolver lts-2.22"   # stack 7.8.4
+    # - ARGS: "--resolver lts-0.7"   # stack 7.8.3
+
+matrix:
+  allow_failures:
+    - ARGS: "--resolver nightly"
+
+cache:
+  - "%STACK_ROOT%"
+  # - "%LOCALAPPDATA%\\Programs\\stack"
+
+install:
+  - curl -sS -o stack.zip -L https://get.haskellstack.org/stable/windows-x86_64.zip
+  - 7z x stack.zip stack.exe
+
+before_build:
+  - stack %ARGS% --no-terminal setup --silent
 
 build_script:
-  - stack %ARGS% setup --silent
+  - stack %ARGS% --no-terminal build
+
+after_build:
+  - stack %ARGS% install --local-bin-path bin
 
 test_script:
   - stack %ARGS% --no-terminal test --bench
+
+artifacts:
+  - path: bin
+    name: executable
