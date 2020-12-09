@@ -88,12 +88,12 @@ jobs:
         stack-no-global: true
 
     # Caching system is causing prolems with Stack on MacOS
-    - name: Cache MacOS
-      uses: actions/cache@v2
-      if: ${{ matrix.os == 'macOS-latest' }}
-      with:
-        path: ~/.stack
-        key: -${{ runner.os }}-${{ matrix.stack-resolver }}-
+    # - name: Cache MacOS
+    #   uses: actions/cache@v2
+    #   if: ${{ matrix.os == 'macOS-latest' }}
+    #   with:
+    #     path: ~/.stack
+    #     key: -${{ runner.os }}-${{ matrix.stack-resolver }}-
 
     - name: Cache Ubuntu
       uses: actions/cache@v2
