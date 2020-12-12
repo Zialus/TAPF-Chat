@@ -4,11 +4,11 @@ module Main where
 
 import           Control.Monad (forever)
 import           Control.Concurrent (forkFinally)
-import           Control.Concurrent.MVar
-import           Control.Exception hiding (handle)
+import           Control.Concurrent.MVar(withMVar, newMVar, putMVar, takeMVar, MVar)
+import           Control.Exception (finally, catch, IOException)
 import           System.IO
 import           Network.Socket
-import           Text.Printf
+import           Text.Printf (hPrintf, printf)
 import           Data.List (delete)
 
 import qualified Control.Exception as E
@@ -89,7 +89,7 @@ removeClient Server{..} client@Client{..} = do
 
 -- | handle an new client
 talk :: Handle -> Server -> IO ()
-talk handle server@Server{..} = do
+talk handle server = do
   hSetNewlineMode handle universalNewlineMode
   hSetBuffering handle LineBuffering
   hPutStrLn handle "Welcome to the Haskell chat server."
@@ -135,7 +135,7 @@ main = withSocketsDo $ do
     open addr = do
         sock <- socket (addrFamily addr) (addrSocketType addr) (addrProtocol addr)
         setSocketOption sock ReuseAddr 1
-        withFdSocket sock $ setCloseOnExecIfNeeded
+        withFdSocket sock setCloseOnExecIfNeeded
         bind sock $ addrAddress addr
         listen sock 1024
         return sock
