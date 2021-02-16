@@ -14,7 +14,9 @@ os:
 env:
   - BUILD=stack ARGS="--resolver nightly"  # stack nightly
   - BUILD=stack ARGS=""  # stack default
-  - BUILD=stack ARGS="--resolver lts-16.25"  # stack 8.8.4
+  - BUILD=stack ARGS="--resolver lts-17.4"  # stack 8.10.4
+  - BUILD=stack ARGS="--resolver lts-17.2"  # stack 8.10.3
+  - BUILD=stack ARGS="--resolver lts-16.31"  # stack 8.8.4
   - BUILD=stack ARGS="--resolver lts-16.11"  # stack 8.8.3
   - BUILD=stack ARGS="--resolver lts-15.3"  # stack 8.8.2
   # - BUILD=stack ARGS="--resolver lts-14.27"  # stack 8.6.5

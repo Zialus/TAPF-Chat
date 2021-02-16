@@ -8,7 +8,9 @@ environment:
   matrix:
     - ARGS: "--resolver nightly"  # stack nightly
     - ARGS: ""  # stack default
-    - ARGS: "--resolver lts-16.25"  # stack 8.8.4
+    - ARGS: "--resolver lts-17.4"  # stack 8.10.4
+    - ARGS: "--resolver lts-17.2"  # stack 8.10.3
+    - ARGS: "--resolver lts-16.31"  # stack 8.8.4
     - ARGS: "--resolver lts-16.11"  # stack 8.8.3
     - ARGS: "--resolver lts-15.3"  # stack 8.8.2
     # - ARGS: "--resolver lts-14.27"   # stack 8.6.5
