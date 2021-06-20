@@ -20,7 +20,7 @@ jobs:
           - "8.4.4"
           - "8.6.5"
           - "8.8.4"
-          - "8.10.4"
+          - "8.10.5"
           - "9.0.1"
 
     steps:
@@ -74,7 +74,7 @@ jobs:
         stack-resolver:
           - "--resolver nightly"  # stack nightly
           - ""  # stack default
-          - "--resolver lts-17.8"  # stack 8.10.4
+          - "--resolver lts-18.0"  # stack 8.10.4
           - "--resolver lts-17.2"  # stack 8.10.3
           - "--resolver lts-16.31"  # stack 8.8.4
           - "--resolver lts-16.11"  # stack 8.8.3
