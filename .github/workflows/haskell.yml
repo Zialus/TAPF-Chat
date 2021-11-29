@@ -74,7 +74,7 @@ jobs:
         stack-resolver:
           - "--resolver nightly"  # stack nightly
           - ""  # stack default
-          - "--resolver lts-18.11"  # stack 8.10.7
+          - "--resolver lts-18.18"  # stack 8.10.7
           - "--resolver lts-18.8"  # stack 8.10.6
           - "--resolver lts-18.6"  # stack 8.10.4
           - "--resolver lts-17.2"  # stack 8.10.3
@@ -96,17 +96,9 @@ jobs:
         enable-stack: true
         stack-no-global: true
 
-    # Caching system is causing prolems with Stack on MacOS
-    # - name: Cache MacOS
-    #   uses: actions/cache@v2
-    #   if: ${{ matrix.os == 'macOS-latest' }}
-    #   with:
-    #     path: ~/.stack
-    #     key: -${{ runner.os }}-${{ matrix.stack-resolver }}-
-
-    - name: Cache Ubuntu
+    - name: Cache Linux/Mac
       uses: actions/cache@v2
-      if: ${{ matrix.os == 'ubuntu-latest' }}
+      if: ${{ matrix.os != 'windows-latest' }}
       with:
         path: ~/.stack
         key: -${{ runner.os }}-${{ matrix.stack-resolver }}-
