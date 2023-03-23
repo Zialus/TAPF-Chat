@@ -23,8 +23,9 @@ jobs:
           - "8.8.4"
           - "8.10.7"
           - "9.0.2"
-          - "9.2.5"
-          - "9.4.3"
+          - "9.2.7"
+          - "9.4.4"
+          - "9.6.1"
 
     steps:
     - name: Checkout
@@ -77,7 +78,9 @@ jobs:
         stack-resolver:
           - "--resolver nightly"  # stack nightly
           - ""  # stack default
-          - "--resolver lts-20.04"  # stack 9.2.5
+          - "--resolver lts-20.15"  # ghc 9.2.7
+          - "--resolver lts-20.12"  # ghc 8.2.6
+          - "--resolver lts-20.11"  # ghc 9.2.5
           - "--resolver lts-19.33"  # stack 9.0.2
           - "--resolver lts-18.28"  # stack 8.10.7
           - "--resolver lts-18.8"  # stack 8.10.6
@@ -90,6 +93,9 @@ jobs:
           # Broken configuration for some reason
           - os: windows-latest
             stack-resolver: "--resolver nightly"
+          # Broken configuration for some reason
+          - os: windows-latest
+            stack-resolver: "--resolver lts-16.11"
 
     steps:
     - name: Checkout
