@@ -8,6 +8,13 @@ environment:
   matrix:
     - ARGS: "--resolver nightly"  # stack nightly
     - ARGS: ""  # stack default
+    - ARGS: "--resolver lts-23.2"  # ghc 9.8.4
+    - ARGS: "--resolver lts-22.43"  # ghc 9.6.6
+    - ARGS: "--resolver lts-22.27"  # ghc 9.6.5
+    - ARGS: "--resolver lts-22.20"  # ghc 9.6.4
+    - ARGS: "--resolver lts-22.6"  # ghc 9.6.3
+    - ARGS: "--resolver lts-21.25"  # ghc 9.4.8
+    - ARGS: "--resolver lts-21.21"  # stack 9.4.7
     - ARGS: "--resolver lts-21.9"  # stack 9.4.6
     - ARGS: "--resolver lts-21.7"  # stack 9.4.5
     - ARGS: "--resolver lts-20.26"  # stack 9.2.8
