@@ -32,7 +32,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Setup Cabal and GHC
-      uses: haskell/actions/setup@v2
+      uses: haskell-actions/setup@v2
       with:
         ghc-version: ${{ matrix.ghc }}
 
@@ -105,7 +105,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Setup Haskell Stack
-      uses: haskell/actions/setup@v2
+      uses: haskell-actions/setup@v2
       with:
         enable-stack: true
         stack-no-global: true
