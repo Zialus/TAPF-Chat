@@ -23,6 +23,10 @@ jobs:
           - "9.8.4"
           - "9.10.1"
           - "9.12.1"
+        exclude:
+          # LLVM is too old
+          - os: macos-15
+            ghc: "9.0.2"
 
     steps:
     - name: Checkout
@@ -81,10 +85,13 @@ jobs:
           - "--resolver lts-20.26"  # ghc 9.2.8
           - "--resolver lts-19.33"  # stack 9.0.2
           - "--resolver lts-18.28"  # stack 8.10.7
-        # exclude:
-          # Broken configuration for some reason
-          # - os: windows-2025
-            # stack-resolver: "--resolver nightly"
+        exclude:
+          # LLVM is too old
+          - os: macos-15
+            stack-resolver: "--resolver lts-18.28"
+          # LLVM is too old
+          - os: macos-15
+            stack-resolver: "--resolver lts-19.33"
 
     steps:
     - name: Checkout
