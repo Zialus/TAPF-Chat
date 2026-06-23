@@ -38,7 +38,7 @@ jobs:
         ghc-version: ${{ matrix.ghc }}
 
     - name: Cache Linux/Mac
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       if: ${{ matrix.os != 'windows-2025' }}
       with:
         path: ~/.cabal
@@ -48,7 +48,7 @@ jobs:
           -${{ runner.os }}-
 
     - name: Cache Windows
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       if: ${{ matrix.os == 'windows-2025' }}
       with:
         path: C:\sr\
@@ -105,14 +105,14 @@ jobs:
         stack-no-global: true
 
     - name: Cache Linux/Mac
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       if: ${{ matrix.os != 'windows-2025' }}
       with:
         path: ~/.stack
         key: -${{ runner.os }}-${{ matrix.stack-resolver }}-
 
     - name: Cache Windows
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       if: ${{ matrix.os == 'windows-2025' }}
       with:
         path: C:\sr\
